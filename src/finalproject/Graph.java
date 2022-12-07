@@ -20,16 +20,23 @@ public class Graph {
 	
     // TODO level 2: add an edge to the graph
     // weight ---> cost Field of destination tile
-    public void addEdge(Tile origin, Tile destination, double weight){Edges.add(new Edge(origin,destination, weight));}
-    
-    // TODO level 2: return a list of all edges in the graph
+    public void addEdge(Tile origin, Tile destination, double weight){
+        if (destination.isWalkable()) Edges.add(new Edge(origin,destination, weight));
+    }
+
 	public ArrayList<Edge> getAllEdges() {
         return Edges;
     }
-  
-	// TODO level 2: return list of tiles adjacent to t
-	public ArrayList<Tile> getNeighbors(Tile t) {
-    	return t.neighbors;
+
+    // only returns the neighbor tiles that are reachable
+	public ArrayList<Tile> getNeighbors(Tile tile) {
+        ArrayList<Tile> arr = new ArrayList<Tile>();
+        for(Tile t: tile.neighbors){
+           if(t.isWalkable()){
+               arr.add(t);
+           }
+        }
+        return arr;
     }
 	
 	// TODO level 2: return total cost for the input path
@@ -39,7 +46,7 @@ public class Graph {
 
         for(int i=0 ;i < path.size()-2; i++){
             Double tmp= getEdge(path.get(i),path.get(i+1)).weight;
-            if(tmp == null) return 0; //if getEdge() returns null then egde does not exist so path cannot be finished
+            if(tmp == null) return 0; //if getEdge() returns null then edge does not exist so path cannot be finished
             cost+= tmp;
         }
         return cost;
@@ -65,20 +72,16 @@ public class Graph {
     	Tile destination;
     	double weight;
 
-        // TODO level 2: initialize appropriate fields
         public Edge(Tile s, Tile d, double cost){
         	origin=s;
             destination=d;
             weight = cost;
         }
-        
-        // TODO level 2: getter function 1
+
         public Tile getStart(){
             return origin;
         }
 
-        
-        // TODO level 2: getter function 2
         public Tile getEnd() {
             return destination;
         }
@@ -108,7 +111,7 @@ public class Graph {
                 }
             }
         }
-        for(Edge e: g.Edges) {
+        for(Edge e: g.getAllEdges()) {
             System.out.println("Edge: Origin Tile: "+e.origin.type+ " || Destination Tile: "+ e.destination.type + " || Weight: "+ e.weight);
         }
     }
