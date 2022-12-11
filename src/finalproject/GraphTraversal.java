@@ -22,11 +22,10 @@ public class GraphTraversal
 			Tile cur = list.getFirst();
 			list.removeFirst();
 			for(Tile t: cur.neighbors) {
-				if(!visited.contains(t.nodeID)) {
+				if(t.isWalkable() && !visited.contains(t.nodeID)) {
 					visited.add(t.nodeID);
 					arr.add(t);
 					list.addLast(t);
-					Logger.getInstance().logMessage("added"+t);
 				}
 			}
 		}
@@ -45,7 +44,7 @@ public class GraphTraversal
 		visitedSet.add(s.nodeID); //adds tile id to set (since they are unique)
 		arr.add(s);
 		for(Tile t: s.neighbors){
-			if(!visitedSet.contains(t.nodeID)) {
+			if(t.isWalkable() && !visitedSet.contains(t.nodeID)) {
 				DepthFirstTraversal(t, arr, visitedSet);
 			}
 		}

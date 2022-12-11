@@ -488,6 +488,7 @@ public class Controller {
     }
 
     private void visualizePath(ArrayList<Tile> path) {
+        System.out.println(path.toString());
         if (path != null && path.size() > 1) {
             int offset = (tileSize+stroke)/2;
             int dist = 0, time = 0;

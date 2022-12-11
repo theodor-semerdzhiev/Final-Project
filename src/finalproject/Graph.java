@@ -55,7 +55,7 @@ public class Graph {
         }
         return cost;
 }
-    private Edge getEdge(Tile start, Tile next){
+    public Edge getEdge(Tile start, Tile next){
         for(Edge t: Edges.get(start)) {
             if(t.destination.equals(next)){
                 return t;
@@ -84,7 +84,6 @@ public class Graph {
         public Tile getEnd() {
             return destination;
         }
-        
     }
 
     //for testing purposes
@@ -92,7 +91,7 @@ public class Graph {
         ArrayList<Tile> arr = new ArrayList<Tile>();
 
         arr.add(new PlainTile());
-        //arr.add(new MountainTile());
+        arr.add(new MountainTile());
         arr.add(new MetroTile());
         arr.add(new FacilityTile());
         arr.add(new PlainTile());

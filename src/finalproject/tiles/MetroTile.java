@@ -7,8 +7,7 @@ public class MetroTile extends Tile {
 	public double metroTimeCost = 100;
 	public double metroDistanceCost = 100;
 	public double metroCommuteFactor = 0.2;
-	
-    //TODO level 0: finish constructor
+
     public MetroTile() {
         super(1,1,2);
         this.type = TileType.Metro;
