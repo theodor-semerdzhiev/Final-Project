@@ -2,6 +2,8 @@ package finalproject;
 
 
 import finalproject.system.Tile;
+import finalproject.system.TileType;
+import finalproject.tiles.MetroTile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,7 +14,6 @@ public class ShortestPath extends PathFindingService {
         super(start);
         generateGraph();
     }
-
 	@Override
 	public void generateGraph() {
         ArrayList<Tile> arr = new ArrayList<Tile>();
@@ -22,6 +23,14 @@ public class ShortestPath extends PathFindingService {
         for(Tile t1: g.getAllVertices()){
             for(Tile t2: t1.neighbors) {
                 g.addEdge(t1,t2, t2.distanceCost);
+            }
+            if(t1.type != TileType.Metro) continue;
+            for(Tile tile: g.getAllVertices()){
+                if(tile == t1) continue;
+                if(tile.type == TileType.Metro) {
+                    ((MetroTile)tile).fixMetro(t1);
+                    g.addEdge(t1,tile, ((MetroTile)tile).metroTimeCost);
+                }
             }
         }
 	}

@@ -63,9 +63,6 @@ public class Graph {
         }
         return null; //means edge between vertices does not exist.
     }
-    public HashMap<Tile, ArrayList<Edge>> getHashMapOfEdges(){
-        return Edges;
-    }
     public ArrayList<Tile> getAllVertices(){
         return this.vertices;
     }
