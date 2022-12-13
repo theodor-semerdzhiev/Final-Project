@@ -17,7 +17,7 @@ public abstract class PathFindingService {
 
 	public abstract void generateGraph();
     
-    //TODO level 4: Implement basic dijkstra's algorithm to find a path to the final unknown destination
+
     public ArrayList<Tile> findPath(Tile startNode) {
 
         init_single_source(startNode);
@@ -61,7 +61,7 @@ public abstract class PathFindingService {
         }
         return next;
     }
-    //TODO level 5: Implement basic dijkstra's algorithm to path find to a known destination
+
     public ArrayList<Tile> findPath(Tile start, Tile end) {
 
         init_single_source(start);
@@ -73,7 +73,7 @@ public abstract class PathFindingService {
             tmp = priQ.removeMin();
             for(Tile t: g.getNeighbors(tmp)) {
                 relax(tmp, t, priQ);
-                if(t == end) {
+                if(t.equals(end)) {
                     foundDestination=true;
                     destination=t;
                     break;
@@ -92,7 +92,6 @@ public abstract class PathFindingService {
 
     }
 
-    //TODO level 5: Implement basic dijkstra's algorithm to path find to the final destination passing through given waypoints
     public ArrayList<Tile> findPath(Tile start, LinkedList<Tile> waypoints){
         ArrayList<Tile> arr = new ArrayList<>();
         Tile tmp=start;

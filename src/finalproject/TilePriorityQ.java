@@ -16,7 +16,7 @@ import finalproject.tiles.PlainTile;
 public class TilePriorityQ {
 
 
-	private ArrayList<Tile> Heap;
+	public ArrayList<Tile> Heap;
 	private int size;
 
 

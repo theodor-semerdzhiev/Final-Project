@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class FastestPath extends PathFindingService {
-    //TODO level 6: find time prioritized path
     public FastestPath(Tile start) {
         super(start);
         generateGraph();
@@ -18,7 +17,7 @@ public class FastestPath extends PathFindingService {
 	public void generateGraph() {
         ArrayList<Tile> arr = new ArrayList<Tile>();
         HashSet<Integer> visited = new HashSet<>();
-        DepthFirstTraversal(super.source,arr,visited);
+        GraphTraversal.DepthFirstTraversal(super.source,arr,visited);
         g = new Graph(arr);
         for(Tile t1: g.getAllVertices()){
             for(Tile t2: t1.neighbors) {
@@ -34,14 +33,4 @@ public class FastestPath extends PathFindingService {
             }
         }
 	}
-
-    private static void DepthFirstTraversal(Tile s, ArrayList<Tile> arr, HashSet<Integer> visitedSet) {
-        visitedSet.add(s.nodeID); //adds tile id to set (since they are unique)
-        arr.add(s);
-        for(Tile t: s.neighbors){
-            if(t.isWalkable() && !visitedSet.contains(t.nodeID)) {
-                DepthFirstTraversal(t, arr, visitedSet);
-            }
-        }
-    }
 }

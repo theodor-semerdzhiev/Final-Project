@@ -39,7 +39,7 @@ public class GraphTraversal
 
 		return arr;
 	}
-	private static void DepthFirstTraversal(Tile s, ArrayList<Tile> arr, HashSet<Integer> visitedSet) {
+	public static void DepthFirstTraversal(Tile s, ArrayList<Tile> arr, HashSet<Integer> visitedSet) {
 
 		visitedSet.add(s.nodeID); //adds tile id to set (since they are unique)
 		arr.add(s);
