@@ -54,12 +54,11 @@ public abstract class PathFindingService {
         }
         tile.costEstimate=0;
     }
-    private Tile relax(Tile current, Tile next, TilePriorityQ Q){
+    private void relax(Tile current, Tile next, TilePriorityQ Q){
         Graph.Edge e = g.getEdge(current,next);
         if(next.costEstimate > (current.costEstimate + e.weight)) {
             Q.updateKeys(next,current,current.costEstimate + e.weight);
         }
-        return next;
     }
 
     public ArrayList<Tile> findPath(Tile start, Tile end) {
@@ -82,24 +81,28 @@ public abstract class PathFindingService {
             if(foundDestination) break;
         }
         ArrayList<Tile> arr = new ArrayList<>();
-
         while(destination !=null) {
+            if(destination == start) break;
             arr.add(0,destination);
             destination=destination.predecessor;
         }
+        arr.add(0, start);
         System.out.println(arr.toString());
         return arr;
 
     }
 
-    public ArrayList<Tile> findPath(Tile start, LinkedList<Tile> waypoints){
+    public ArrayList<Tile> findPath(Tile start, LinkedList<Tile> waypoints) {
         ArrayList<Tile> arr = new ArrayList<>();
-        Tile tmp=start;
-        for(Tile t: waypoints){
-            arr.addAll(findPath(tmp,t));
-            tmp=t;
+        Tile tmp = start;
+        ArrayList<Tile> tmp2=null;
+        for (Tile t : waypoints) {
+            arr.addAll(findPath(tmp, t));
+            tmp = t;
+            arr.remove(tmp);
         }
-        arr.addAll(findPath(tmp));
+        tmp2 = findPath(tmp);
+        arr.addAll(findPath(tmp2.get(0)));
         return arr;
     }
 }

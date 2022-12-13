@@ -32,34 +32,27 @@ public class SafestShortestPath extends ShortestPath {
 	}
 	private Graph createGraph(weightType type){
 		Graph g;
-		ArrayList<Tile> arr = new ArrayList<Tile>();
-		HashSet<Integer> visited = new HashSet<>();
-		GraphTraversal.DepthFirstTraversal(super.source,arr,visited);
+		ArrayList<Tile> arr = GraphTraversal.DFS(super.source);
 		g = new Graph(arr);
 		for(Tile t1: g.getAllVertices()){
 			for(Tile t2: t1.neighbors) {
 				switch (type){
 					case DISTANCE:
-						g.addEdge(t1,t2, t2.distanceCost);
+						if(t1.type == TileType.Metro && t2.type == TileType.Metro && t2.isWalkable()) {
+							((MetroTile)t2).fixMetro(t1);
+							g.addEdge(t1,t2, ((MetroTile)t2).metroTimeCost);
+						} else if(t2.isWalkable()) {
+							g.addEdge(t1, t2, t2.distanceCost);
+						}
 						break;
 					case DAMAGE:
-						g.addEdge(t1,t2, t2.damageCost);
+						if(t1.type == TileType.Metro && t2.type == TileType.Metro && t2.isWalkable()) {
+							((MetroTile)t2).fixMetro(t1);
+							g.addEdge(t1,t2, ((MetroTile)t2).damageCost);
+						} else if(t2.isWalkable()) {
+							g.addEdge(t1, t2, t2.damageCost);
+						}
 						break;
-				}
-			}
-			if(t1.type != TileType.Metro) continue;
-			for(Tile tile: g.getAllVertices()){
-				if(tile == t1) continue;
-				if(tile.type == TileType.Metro) {
-					((MetroTile)tile).fixMetro(t1);
-					switch (type){
-						case DISTANCE:
-							g.addEdge(t1,tile, ((MetroTile)tile).metroDistanceCost);
-							break;
-						case DAMAGE:
-							g.addEdge(t1,tile, ((MetroTile)tile).damageCost);
-							break;
-					}
 				}
 			}
 		}
@@ -89,7 +82,7 @@ public class SafestShortestPath extends ShortestPath {
 			ArrayList<Tile> aggregatedpath = super.findPath(start,waypoints);
 			double aggregatecost = g.computePathCost(aggregatedpath);
 			if (aggregatecost == g.computePathCost(costPath)) {
-				return damagePath;
+				break;
 			} else if (damageGraph.computePathCost(aggregatedpath) <= health) {
 				damagePath=aggregatedpath;
 			} else {
@@ -97,19 +90,6 @@ public class SafestShortestPath extends ShortestPath {
 				costPath = aggregatedpath;
 			}
 		}
-	}
-
-	public double computeCost(ArrayList<Tile> path, weightType type){
-		double cost=0;
-		for(int i=1; i< path.size(); i++){
-			switch (type) {
-				case DAMAGE:
-					cost += path.get(i).damageCost;
-					continue;
-				case DISTANCE:
-					cost += path.get(i).distanceCost;
-			}
-		}
-		return cost;
+		return damagePath;
 	}
 }

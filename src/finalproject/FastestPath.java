@@ -15,20 +15,16 @@ public class FastestPath extends PathFindingService {
 
 	@Override
 	public void generateGraph() {
-        ArrayList<Tile> arr = new ArrayList<Tile>();
-        HashSet<Integer> visited = new HashSet<>();
-        GraphTraversal.DepthFirstTraversal(super.source,arr,visited);
+        ArrayList<Tile> arr = GraphTraversal.BFS(super.source);
         g = new Graph(arr);
         for(Tile t1: g.getAllVertices()){
+            if(!t1.isWalkable()) continue;
             for(Tile t2: t1.neighbors) {
-                g.addEdge(t1,t2, t2.timeCost);
-            }
-            if(t1.type != TileType.Metro) continue;
-            for(Tile tile: g.getAllVertices()){
-                if(tile == t1) continue;
-                if(tile.type == TileType.Metro) {
-                    ((MetroTile)tile).fixMetro(t1);
-                    g.addEdge(t1,tile, ((MetroTile)tile).metroTimeCost);
+                if(t1.type == TileType.Metro && t2.type == TileType.Metro && t2.isWalkable()) {
+                    ((MetroTile)t2).fixMetro(t1);
+                    g.addEdge(t1,t2, ((MetroTile)t2).metroTimeCost);
+                } else if(t2.isWalkable()) {
+                    g.addEdge(t1, t2, t2.timeCost);
                 }
             }
         }

@@ -22,23 +22,27 @@ public class Graph {
         if (destination.isWalkable()) {
             if(!Edges.containsKey(origin) ) {
                 Edges.put(origin, new ArrayList<Edge>());
-            }
-            if(origin.isWalkable()) {
+                Edges.get(origin).add(new Edge(origin, destination, weight));
+            } else if(origin.isWalkable()) {
                 Edges.get(origin).add(new Edge(origin, destination, weight));
             }
         }
     }
 	public ArrayList<Edge> getAllEdges() {
         ArrayList<Edge> arr = new ArrayList<Edge>();
-        Edges.forEach((key,arraylist) -> arraylist.forEach((edge -> arr.add(edge))));
+        Edges.forEach((key,arraylist) -> {
+            for(Edge e: arraylist){
+                arr.add(e);
+            }
+        });
         return arr;
     }
     // only returns the neighbor tiles that are reachable
 	public ArrayList<Tile> getNeighbors(Tile tile) {
         ArrayList<Tile> arr = new ArrayList<Tile>();
-        for(Tile t: tile.neighbors){
-           if(t.isWalkable()){
-               arr.add(t);
+        for(Edge e: Edges.get(tile)){
+           if(e.destination.isWalkable() && tile.isWalkable()){
+               arr.add(e.destination);
            }
         }
         return arr;
@@ -66,6 +70,11 @@ public class Graph {
     public ArrayList<Tile> getAllVertices(){
         return this.vertices;
     }
+
+    public HashMap<Tile, ArrayList<Edge>> getEdgesHashMap() {
+        return Edges;
+    }
+
     public static class Edge{
     	Tile origin;
     	Tile destination;
